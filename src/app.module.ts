@@ -1,12 +1,13 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { EventReaderService } from './event-reader/event-reader.service';
+import { EventReaderService } from './event-reader/event.reader.service';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Event } from './event-reader/event.entity';
-import { EventSaverService } from './event-reader/event-saver.service';
+import { Event } from './event-db/event.entity';
 import { DataSource } from 'typeorm';
+import { EventProcessorService } from './event-processor/event.processor.service';
+import { EventDbService } from './event-db/event.db.service';
 
 @Module({
   imports: [
@@ -20,7 +21,12 @@ import { DataSource } from 'typeorm';
     TypeOrmModule.forFeature([Event]),
   ],
   controllers: [AppController],
-  providers: [AppService, EventSaverService, EventReaderService],
+  providers: [
+    AppService,
+    EventDbService,
+    EventReaderService,
+    EventProcessorService,
+  ],
 })
 export class AppModule {
   constructor(private dataSource: DataSource) {}

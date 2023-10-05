@@ -37,4 +37,7 @@ export class Event {
 
   //   @Column()
   //   args: string[];
+
+  @Column({ default: false })
+  processed: boolean;
 }
