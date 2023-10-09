@@ -13,7 +13,6 @@ export class EventDbService {
   ) {}
 
   async saveEvents(etherEvents: ethers.Event[]) {
-    // const events = etherEvents.map((event) => plainToClass(Event, event));
     const events = plainToInstance(Event, etherEvents);
     console.log('Saving events');
     events.forEach(async (event) => {
@@ -53,5 +52,20 @@ export class EventDbService {
       console.log('Event saved');
     }
     await this.eventRepository.update({ id: eventDb.id }, { processed: true });
+  }
+
+  async markEventMined(transactionHash: ethers.Event['transactionHash']) {
+    console.log(`marking event ${transactionHash} as mined`);
+    let eventDb = await this.eventRepository.findOne({
+      where: { transactionHash: transactionHash },
+    });
+    if (!eventDb) {
+      eventDb = await this.eventRepository.save(plainToClass(Event, event));
+      console.log('Event saved');
+    }
+    await this.eventRepository.update(
+      { id: eventDb.id },
+      { processed: true, mined: true },
+    );
   }
 }

@@ -3,6 +3,7 @@ import { ethers } from 'ethers';
 import * as pingPongAbi from '../contract-abi/ping-pong.abi.json';
 import { EventDbService } from '../event-db/event.db.service';
 import { EventProcessorService } from 'src/event-processor/event.processor.service';
+import { getEthersProvider } from 'src/utils/ethers.provider';
 
 @Injectable()
 export class EventReaderService {
@@ -15,7 +16,7 @@ export class EventReaderService {
 
   async readPastEvents() {
     // Read events from blockchain
-    const provider = this.getEthersProvider();
+    const provider = getEthersProvider();
     const contract = new ethers.Contract(
       process.env.ContractAddress!,
       pingPongAbi,
@@ -37,7 +38,7 @@ export class EventReaderService {
 
   async readEvents() {
     // Read events from blockchain
-    const provider = this.getEthersProvider();
+    const provider = getEthersProvider();
     const contract = new ethers.Contract(
       process.env.ContractAddress!,
       pingPongAbi,
@@ -53,14 +54,5 @@ export class EventReaderService {
       // Call Pong function
       this.eventProcessorService.processOneEvent(etherEvent);
     });
-  }
-
-  getEthersProvider(): ethers.providers.FallbackProvider {
-    const infuraProvider = new ethers.providers.InfuraProvider(
-      process.env.Network,
-      process.env.InfuraAPIKey,
-    );
-
-    return new ethers.providers.FallbackProvider([infuraProvider]);
   }
 }

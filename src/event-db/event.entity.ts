@@ -1,9 +1,12 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
-
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { Transaction } from './transaction.entity';
 @Entity()
 export class Event {
   @PrimaryGeneratedColumn()
   id: number;
+
+  @OneToMany(() => Transaction, (transaction: Transaction) => transaction.event)
+  transactions?: Transaction[];
 
   @Column()
   blockNumber: number;
@@ -40,4 +43,7 @@ export class Event {
 
   @Column({ default: false })
   processed: boolean;
+
+  @Column({ default: false })
+  mined: boolean;
 }
