@@ -2,8 +2,8 @@ import { Inject, Injectable } from '@nestjs/common';
 import { ethers } from 'ethers';
 import * as pingPongAbi from '../contract-abi/ping-pong.abi.json';
 import { EventDbService } from '../event-db/event.db.service';
-import { EventProcessorService } from 'src/event-processor/event.processor.service';
-import { getEthersProvider } from 'src/utils/ethers.provider';
+import { EventProcessorService } from '../event-processor/event.processor.service';
+import { getEthersProvider } from '../utils/ethers.provider';
 
 @Injectable()
 export class EventReaderService {

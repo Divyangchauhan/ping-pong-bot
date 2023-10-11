@@ -3,8 +3,8 @@ import { ethers } from 'ethers';
 import * as pingPongAbi from '../contract-abi/ping-pong.abi.json';
 import { EventDbService } from '../event-db/event.db.service';
 import { NonceManager } from '@ethersproject/experimental';
-import { TransactionDbService } from 'src/event-db/transaction.db.service';
-import { getEthersProvider } from 'src/utils/ethers.provider';
+import { TransactionDbService } from '../event-db/transaction.db.service';
+import { getEthersProvider } from '../utils/ethers.provider';
 
 @Injectable()
 export class EventProcessorService {
