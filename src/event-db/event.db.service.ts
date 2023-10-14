@@ -15,14 +15,14 @@ export class EventDbService {
   async saveEvents(etherEvents: ethers.Event[]) {
     const events = plainToInstance(Event, etherEvents);
     console.log('Saving events');
-    events.forEach(async (event) => {
+    for (const event of events) {
       const eventDb = await this.eventRepository.findOne({
         where: { transactionHash: event.transactionHash },
       });
       if (!eventDb) {
-        this.eventRepository.save(event);
+        await this.eventRepository.save(event);
       }
-    });
+    }
   }
 
   async saveOneEvent(etherEvent: ethers.Event) {

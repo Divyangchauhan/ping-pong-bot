@@ -5,7 +5,6 @@ import * as pingPongAbi from '../contract-abi/ping-pong.abi.json';
 import { EventDbService } from '../event-db/event.db.service';
 import { NonceManager } from '@ethersproject/experimental';
 import { TransactionDbService } from 'src/event-db/transaction.db.service';
-import { Transaction } from 'src/event-db/transaction.entity';
 import { getEthersProvider } from 'src/utils/ethers.provider';
 
 @Injectable()
@@ -18,7 +17,7 @@ export class TransactionCronService {
   ) {}
   private readonly logger = new Logger(TransactionCronService.name);
 
-  @Cron(CronExpression.EVERY_30_SECONDS)
+  @Cron(CronExpression.EVERY_HOUR)
   async handleUnminedTransaction() {
     this.logger.debug('Called every hour to check for unmined transaction');
 
@@ -36,7 +35,7 @@ export class TransactionCronService {
     const transactions =
       await this.transactionDbService.findUnminedTransaction();
 
-    transactions.forEach(async (transaction: Transaction) => {
+    for (const transaction of transactions) {
       const tx = provider.getTransactionReceipt(transaction.hash);
       if (!tx) {
         // Resend transaction with higher gas price and same nonce
@@ -63,6 +62,6 @@ export class TransactionCronService {
           transaction.event.transactionHash,
         );
       }
-    });
+    }
   }
 }

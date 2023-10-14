@@ -39,6 +39,7 @@ export class TransactionDbService {
     transaction.type = String(etherTransaction.type);
     transaction.value = String(etherTransaction.value);
     transaction.mined = false;
+    transaction.event = event;
 
     console.log('Saving transaction');
     const transactionDb = await this.transactionRepository.findOne({

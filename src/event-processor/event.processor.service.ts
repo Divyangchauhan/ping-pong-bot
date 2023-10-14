@@ -27,7 +27,7 @@ export class EventProcessorService {
     );
 
     // Call Pong function
-    events.forEach(async (event) => {
+    for (const event of events) {
       const eventDb = await this.eventDbService.findOneEvent(
         event.transactionHash,
       );
@@ -76,7 +76,7 @@ export class EventProcessorService {
         await this.transactionDbService.saveOneTransaction(tx, eventDb!);
         await this.eventDbService.markEventProcessed(event);
       }
-    });
+    }
   }
 
   async processOneEvent(event: ethers.Event) {
